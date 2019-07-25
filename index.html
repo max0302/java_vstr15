@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>java vstr 15 поиск фильмов</title>
+	<style>
+		.search {
+			display: flex;
+			background-color: #fbf2e9;
+			text-align:left;
+			padding: 1.5em;
+		}
+		.column {
+			flex-direction: column;
+		}
+		.row {
+			flex-direction: row;
+			flex-wrap: wrap;
+		}
+	</style>
+</head>
+<body>
+	<div class="search">
+			<h2">Search:</h2>
+	</div>
+	<div class="search" style="border: 1px solid black;">
+		<form action="#" name="myForm">
+			<p>
+				<label>Title:</label>
+				<input type="text" name="title">
+			</p>
+			<p>
+				<label>Type:</label>
+				<select name="type">
+					<option value="movie">movie</option>
+					<option value="series">series</option>
+					<option value="episode">episode</option>
+				</select>
+			</p>
+			<p>
+				<input type="submit" name="send" value="search" style="background-color: gray;border: 1px solid black;">
+			</p>
+		</form>
+	</div>
+
+<!-- <div class="search row">
+
+	<div class="search">
+			<img src="https://m.media-amazon.com/images/M/MV5BMTg0NTM3MTI1MF5BMl5BanBnXkFtZTgwMTAzNTAzNzE@._V1_SX300.jpg">
+			<div class="search column">
+				<div>movie</div>
+				<div>Hello, My Name Is Doris</div>
+				<div>2015</div>
+			</div>
+	</div>
+
+		<div class="search">
+			<img src="https://m.media-amazon.com/images/M/MV5BMTg0NTM3MTI1MF5BMl5BanBnXkFtZTgwMTAzNTAzNzE@._V1_SX300.jpg">
+			<div class="search column">
+				<div>movie</div>
+				<div>Hello, My Name Is Doris</div>
+				<div>2015</div>
+			</div>
+	</div>
+
+</div> -->
+
+</body>
+	<script>
+		document.myForm.send.addEventListener('click', ()=>{
+			
+			event.preventDefault();
+			let title = document.myForm.title.value;
+			let type = document.myForm.type.value;
+			let xhr = new XMLHttpRequest();
+			xhr.open('GET', `http://www.omdbapi.com/?apikey=a786868c&s=${title}&type=${type}`, true);
+			xhr.send();
+			xhr.onreadystatechange = () => {
+					if (xhr.readyState !== 4) {
+						return;
+					}
+					if (xhr.status !== 200) {
+						console.log(`${xhr.status}: ${xhr.statusText}`);
+					}
+					else {
+						let obj = JSON.parse(xhr.responseText)['Search'];
+						console.log(obj);
+
+let div0 = document.createElement("div");
+div0.className = "search row";
+document.body.appendChild(div0);
+
+							for(let i=0; i<=obj.length; i++)
+							{
+								let div = document.createElement("div");
+								
+													
+									div.innerHTML = `
+
+
+									<div class="search">
+												<img src=${obj[i].Poster}>
+												<div class="search column">
+													<div>${obj[i].Type}</div>
+													<div>${obj[i].Title}</div>
+													<div>${obj[i].Year}</div>
+												</div>
+									</div>
+
+									`;
+
+							div0.appendChild(div);
+							}
+					}
+				};
+		});
+	</script>
+</html>
